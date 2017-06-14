@@ -120,7 +120,8 @@ pie_miss = get_total()[0][1]
 pie_total = get_total()[0][2]
 
 pie_chart = pygal.Pie(style=DarkStyle,
-                      font_size=32)
+                      font_size=32,
+                      print_values=True)
 pie_chart.title = "Total Gym Sessions from Jan-2013 to {}-2017 | {} Days"\
     .format(calendar.month_abbr[last_month_int], pie_total)
 
@@ -130,7 +131,7 @@ pie_chart.render_to_file("pie_chart.svg")
 
 time_dates = [i[0] for i in get_long_short()]
 time_data = [i[1] for i in get_long_short()]
-average_sess = np.mean(np.array)
+average_sess = np.mean(np.array(time_data))
 
 # BAR CHART for Session Durations
 
