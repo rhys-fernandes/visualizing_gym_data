@@ -11,18 +11,29 @@ db = conn.cursor()
 def get_data():
     raw_data = []
     soup = BeautifulSoup(open("data.html"), "html.parser")
+
+    # remove unwanted strings such as "error messages"
     for i in soup.find_all("div", {"class": "eventscroll"}):
         raw_data = i.get_text().split()
         raw_data = [x for x in raw_data if x != "No"]
         raw_data = [x for x in raw_data if x != "access"]
         raw_data = [x for x in raw_data if x != "made"]
 
-    clean_data = list(raw_data)
-    paired_data = list(zip(clean_data[0::2], clean_data[1::2]))
+    # Date and time are grouped into a tuple for each time
+
+    paired_data = list(zip(raw_data[0::2], raw_data[1::2]))
+
     raw_dict = defaultdict(list)
+    
+    # Data now contained in a dictionary. Date being the keys and the times 
+    # being a list of values. 
+
     for i, x in paired_data:
         raw_dict[i].append(x)
 
+    # cleaning data, keeping only the min and max value. Remove any items 
+    # with less than 2 times.  
+    
     for key, val in raw_dict.items():
         for i in val:
             # remove any value that isn't the min or max
@@ -82,3 +93,4 @@ def fill_db(data):
 
     conn.close()
 
+get_data()
